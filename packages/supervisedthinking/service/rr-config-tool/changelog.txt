@@ -1,0 +1,20 @@
+106
+- Make FluidSynth service optional
+
+105
+- Removed refresh rates for GBM/KMS ARM builds
+
+104
+- Removed demos / id games menu option
+
+103
+- Fixed Kodi 19 Matrix compatibility
+
+102
+- Added refresh rate settings for PCSX2
+
+101
+- Added volume control for PulseAudio
+
+100
+- Initial release
