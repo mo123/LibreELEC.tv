@@ -1,0 +1,167 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+. /etc/profile
+oe_setup_addon service.rr-config-tool
+
+################################################################################
+# Set common vars
+################################################################################
+
+SPOTIFY_ICON_CACHE="/storage/.cache/spotify.pkg/icons/spotify-linux-512.png"
+SPOTIFY_ICON_OPT="/opt/spotify/DefaultAddonMusicSpotify.png"
+SPOTIFY_PKG_PATH="/storage/.cache/spotify.pkg"
+SPOTIFY_CACHE="/storage/.cache/spotify"
+SPOTIFY_CONFIG_PATH="/storage/.config/spotify"
+SPOTIFY_VERSION_FILE="${SPOTIFY_PKG_PATH}/spotify.version"
+SPOTIFY_LOG="/var/log/spotify.log"
+SPOTIFY_TMP="/tmp/spotify"
+SPOTIFY_BRANCH_STABLE="https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=spotify"
+SPOTIFY_BRANCH_DEV="https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=spotify-dev"
+
+################################################################################
+# Init
+################################################################################
+
+# Clean up
+rm -rf ${SPOTIFY_TMP}
+rm -rf ${SPOTIFY_CACHE}
+rm -f ${SPOTIFY_LOG}
+
+# Set Kodi-Icon for Spotify
+if [ -f ${SPOTIFY_ICON_CACHE} ];then
+  SPOTIFY_ICON=${SPOTIFY_ICON_CACHE}
+else
+  SPOTIFY_ICON=${SPOTIFY_ICON_OPT}
+fi
+
+# Get installed Spotify version
+if [ -f ${SPOTIFY_VERSION_FILE} ]; then
+  SPOTIFY_CACHED_VER=$(cat ${SPOTIFY_VERSION_FILE})
+else
+  SPOTIFY_CACHED_VER="unknown version"
+fi
+
+################################################################################
+# Functions
+################################################################################
+
+# Get the current online version
+get_spotify_version() {
+  case ${RR_SPOTIFY_BRANCH} in
+    dev)
+      SPOTIFY_REPO_VER=`curl -s ${SPOTIFY_BRANCH_DEV} | grep -E '^pkgver=' | cut -f2- -d"="` || exit 1
+      ;;
+    *)
+      SPOTIFY_REPO_VER=`curl -s ${SPOTIFY_BRANCH_STABLE} | grep -E '^pkgver=' | cut -f2- -d"="` || exit 1
+      ;;
+  esac
+  if [ ! -z "${SPOTIFY_REPO_VER}" ]; then
+    echo ${SPOTIFY_REPO_VER}
+  fi
+}
+
+# Retrieve the Spotify download URL depending on the chosen branch
+get_spotify_download_url() {
+  case $1 in
+    dev)
+      SPOTIFY_BRANCH=${SPOTIFY_BRANCH_DEV}
+      ;;
+    *)
+      SPOTIFY_BRANCH=${SPOTIFY_BRANCH_STABLE}
+      ;;
+  esac
+
+  SPOTIFY_SOURCE_x86_64=`curl -s ${SPOTIFY_BRANCH} | grep -E 'x86_64.deb::' | cut -f2- -d":" | cut -f2- -d":" | cut -f1 -d"\""` || exit 1
+  SPOTIFY_PKGVER=`curl -s ${SPOTIFY_BRANCH} | grep -E '^pkgver=' | cut -f2- -d"="` || exit 1
+  SPOTIFY_COMMIT=`curl -s ${SPOTIFY_BRANCH} | grep -E '^_commit=' | cut -f2- -d"="` || exit 1
+  SPOTIFY_DEB_URL=`echo ${SPOTIFY_SOURCE_x86_64} | sed s:\$\{pkgver\}:${SPOTIFY_PKGVER}: | sed s:\$\{_commit\}:${SPOTIFY_COMMIT}: | cut -d \" -f 2`
+
+  # Print URL to Spotify package if curl can access it
+  if [ ! -z "$(curl -s --head ${SPOTIFY_DEB_URL} | head -n 1 | grep "HTTP/2 [23]..")" ] || [ ! -z "$(curl -s --head ${SPOTIFY_DEB_URL} | head -n 1 | grep "HTTP/1.1 [23]..")" ]; then
+    echo ${SPOTIFY_DEB_URL}
+  fi
+}
+
+# Install Spotify
+install_spotify() {
+  kodi-send --action="Notification(Spotify,Downloading & installing the Spotify package - please stand by.,6750,${SPOTIFY_ICON})"
+  mkdir -p ${SPOTIFY_TMP} ; cd ${SPOTIFY_TMP}
+  wget -q ${SPOTIFY_DOWNLOAD_URL} || exit 1
+  kodi-send --action="Notification(Spotify,Package download finished - installing Spotify.,5000,${SPOTIFY_ICON})"
+  ar -x *.deb && tar -zxf data.tar.gz
+  rm -rf ${SPOTIFY_CACHE}
+  mv usr/share/spotify ${SPOTIFY_PKG_PATH}
+  if [ ! -d ${SPOTIFY_CONFIG_PATH} ]; then
+    mkdir ${SPOTIFY_CONFIG_PATH}
+  fi
+  echo ${SPOTIFY_REPO_VER} > ${SPOTIFY_VERSION_FILE} 2>&1
+  SPOTIFY_CACHED_VER=${SPOTIFY_REPO_VER}
+  cd ~ ; rm -rf ${SPOTIFY_TMP}
+}
+
+# Update Spotify or switch branch
+update_spotify() {
+  kodi-send --action="Notification(Spotify,An update to Spotify v${SPOTIFY_REPO_VER} is availabe - please stand by.,6000,${SPOTIFY_ICON})"
+  mkdir -p ${SPOTIFY_TMP} ; cd ${SPOTIFY_TMP}
+  wget -q ${SPOTIFY_DOWNLOAD_URL} || exit 1
+  kodi-send --action="Notification(Spotify,Package download finished - updating Spotify.,5000,${SPOTIFY_ICON})"
+  ar -x *.deb && tar -zxf data.tar.gz
+  rm -rf ${SPOTIFY_PKG_PATH}
+  rm -rf $SPOTIFY_CACHE
+  mv usr/share/spotify ${SPOTIFY_PKG_PATH}
+  echo ${SPOTIFY_REPO_VER} > ${SPOTIFY_VERSION_FILE} 2>&1
+  SPOTIFY_CACHED_VER=${SPOTIFY_REPO_VER}
+  cd ~ ; rm -rf ${SPOTIFY_TMP}
+}
+
+# Freeze Kodi / Stop PulseAudio / Run Spotify
+run_spotify() {
+  kodi-send --action="Notification(Spotify,starting "${RR_SPOTIFY_BRANCH}" client v"${SPOTIFY_CACHED_VER}" - please stand by.,250,${SPOTIFY_ICON})"
+  usleep 250000
+  kodictrl --stop
+  ${SPOTIFY_PKG_PATH}/spotify "$@"
+  kodictrl --start
+}
+
+################################################################################
+# Run
+################################################################################
+
+# Get the current download URL & version 
+SPOTIFY_DOWNLOAD_URL=$(get_spotify_download_url ${RR_SPOTIFY_BRANCH})
+SPOTIFY_REPO_VER=$(get_spotify_version ${RR_SPOTIFY_BRANCH})
+
+
+# Install / Update Spotify if necessary
+if [ ! -z "${SPOTIFY_DOWNLOAD_URL}" ]; then
+  if [ ! -d ${SPOTIFY_PKG_PATH} ]; then
+    echo -e "\n################################################" >> ${SPOTIFY_LOG} 2>&1
+    echo "# Installing Spotify" ${SPOTIFY_REPO_VER} "(Branch: "${RR_SPOTIFY_BRANCH}")" >> ${SPOTIFY_LOG} 2>&1
+    echo -e "################################################" >> ${SPOTIFY_LOG} 2>&1
+    install_spotify "$1" >> ${SPOTIFY_LOG} 2>&1
+  fi
+
+  # Update if installed version != online version
+  if [ ! -z "${SPOTIFY_REPO_VER}" ] && [ "${SPOTIFY_REPO_VER}" != "${SPOTIFY_CACHED_VER}" ]; then
+    echo -e "\n############################################################" >> ${SPOTIFY_LOG} 2>&1
+    echo "# Updating Spotify" "${SPOTIFY_CACHED_VER}" "to" "${SPOTIFY_REPO_VER}" "(Branch: "${RR_SPOTIFY_BRANCH}")" >> ${SPOTIFY_LOG} 2>&1
+    echo -e "############################################################" >> ${SPOTIFY_LOG} 2>&1
+    update_spotify "$1" >> ${SPOTIFY_LOG} 2>&1
+  fi
+else
+  echo "Error: Could not obtain a valid url to the Spotify package or the server did not respond!" >> ${SPOTIFY_LOG} 2>&1
+fi
+
+# Start Spotify if binary is in place
+if [ -f ${SPOTIFY_PKG_PATH}/spotify ]; then
+  echo -e "\n##############################################" >> ${SPOTIFY_LOG} 2>&1
+  echo "# Starting Spotify" "${SPOTIFY_CACHED_VER}" "(Branch: "${RR_SPOTIFY_BRANCH}")" >> ${SPOTIFY_LOG} 2>&1
+  echo -e "##############################################\n" >> ${SPOTIFY_LOG} 2>&1
+  run_spotify "$@" >> ${SPOTIFY_LOG} 2>&1
+
+# If download URL is invalid & no Spotify binary is found send error message
+elif [ ! -f ${SPOTIFY_PKG_PATH}/spotify ] && [ -z "${SPOTIFY_DOWNLOAD_URL}" ]; then
+  kodi-send --action="Notification(Spotify,Could not download the Spotify package. Try to set the Spotify branch to dev or wait for a package update. ,15500,${SPOTIFY_ICON})" >> ${SPOTIFY_LOG} 2>&1
+fi
