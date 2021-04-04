@@ -16,7 +16,7 @@ PKG_MESON_OPTS_TARGET="-D x11_backend=true \
                        -D wayland_backend=false \
                        -D quartz_backend=false \
                        -D xinerama=no \
-                       -D print_backends=auto \
+                       -D print_backends=file,lpr \
                        -D colord=no \
                        -D introspection=false \
                        -D demos=false \
