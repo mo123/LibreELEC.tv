@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="sdl2_mixer"
-PKG_VERSION="fe054fb6f86f4d0ef15287a4e47a6eabd215efe7"
-PKG_SHA256="99df0f7b9164a0e17c391f2baf4ae37a0fab0501feb076eb91a80c15bf999b9c"
+PKG_VERSION="228ecedc257a24e384e4af35899190541000fb07"
+PKG_SHA256="8988afbf15b7c190d6e8a2a08bfa153cfb16440abbdbb38fbc7f8d3f25c0cb17"
 PKG_LICENSE="SDL"
 PKG_SITE="https://libsdl.org/projects/SDL_mixer/"
 PKG_URL="https://github.com/libsdl-org/SDL_mixer/archive/${PKG_VERSION}.tar.gz"
