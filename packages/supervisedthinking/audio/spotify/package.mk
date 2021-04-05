@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="spotify"
-PKG_VERSION="1.0.1"
+PKG_VERSION="1.0.2"
 PKG_ARCH="x86_64"
 PKG_LICENSE="Freeware"
 PKG_SITE="http://www.spotify.com"
