@@ -26,8 +26,12 @@ SPOTIFY_BRANCH_DEV="https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=spot
 
 # Clean up
 rm -rf ${SPOTIFY_TMP}
-rm -rf ${SPOTIFY_CACHE}
 rm -f ${SPOTIFY_LOG}
+
+# Conditionally clean up Spotify cache 
+if [ ${RR_SPOTIFY_CLEAN_CACHE} = "true" ];then
+  rm -rf ${SPOTIFY_CACHE}
+fi
 
 # Set Kodi-Icon for Spotify
 if [ -f ${SPOTIFY_ICON_CACHE} ];then
