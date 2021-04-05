@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="beetle-saturn"
-PKG_VERSION="47b30b4fc4bdac805261218d942bcadee5479d5f"
-PKG_SHA256="aa336ce99d4c866e2ebd5bfdd32d6ddda84e31f8f16f86dba07507c12a1025c0"
+PKG_VERSION="382f1e95079c0c304b31e57c5a8f9837492c2c11"
+PKG_SHA256="15e2acdacb8e2ae918f643c388fb538546fd7d85f2dbf70d577ae72f64109df2"
 PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/libretro/beetle-saturn-libretro"
 PKG_URL="https://github.com/libretro/beetle-saturn-libretro/archive/${PKG_VERSION}.tar.gz"
