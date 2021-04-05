@@ -1,3 +1,6 @@
+107
+- Add option to clean Spotify cache
+
 106
 - Make FluidSynth service optional
 

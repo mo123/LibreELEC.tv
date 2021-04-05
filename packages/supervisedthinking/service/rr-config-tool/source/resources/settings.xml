@@ -35,6 +35,7 @@
   <category  label="30400">
     <setting label="30401" type="lsep"/>
     <setting type="sep" />
-    <setting id="RR_SPOTIFY_BRANCH" type="select" label="30402" values="stable|dev" default="stable"/>
+    <setting id="RR_SPOTIFY_BRANCH"      type="select" label="30402" values="stable|dev" default="stable"/>
+    <setting id="RR_SPOTIFY_CLEAN_CACHE" type="bool"   label="30403"                     default="false"/>
   </category>
 </settings>

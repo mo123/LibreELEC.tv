@@ -3,7 +3,7 @@
 
 PKG_NAME="rr-config-tool"
 PKG_VERSION="1.0"
-PKG_REV="106"
+PKG_REV="107"
 PKG_ARCH="any"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_DEPENDS_TARGET="toolchain"
