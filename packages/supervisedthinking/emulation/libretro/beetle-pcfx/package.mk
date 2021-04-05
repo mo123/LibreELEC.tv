@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="beetle-pcfx"
-PKG_VERSION="63cfa4d286402a1836ac34afb65cd2915e72e3c3"
-PKG_SHA256="d97627cc2eb628526216c85b64ad723e052d4e090aa43ad09087abb1a78c0104"
+PKG_VERSION="ff9fccbe90f3490e3b91a1094fe4a926ff4ae96e"
+PKG_SHA256="dd70da3d24cd68f2fa375a308bbfe6c6fbb40a88f25d10dd2b449e55dfcf0dd6"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/libretro/beetle-pcfx-libretro"
 PKG_URL="https://github.com/libretro/beetle-pcfx-libretro/archive/${PKG_VERSION}.tar.gz"
