@@ -104,17 +104,22 @@ spotify_install() {
       echo -e "#########################################################" >> ${SPOTIFY_LOG} 2>&1
 
       kodi-send --action="Notification(Spotify,Downloading & installing the Spotify package - please stand by.,6750,${SPOTIFY_ICON})"
-      rm -rf ${SPOTIFY_CACHE}
       mkdir -p ${SPOTIFY_TMP}
       cd ${SPOTIFY_TMP}
-      wget -q ${SPOTIFY_DOWNLOAD_URL} || exit 1
-      kodi-send --action="Notification(Spotify,Package download finished - installing Spotify.,5000,${SPOTIFY_ICON})"
-      ar -x *.deb 
-      tar -xzf data.tar.gz
-      mv usr/share/spotify ${SPOTIFY_PKG_PATH}
-      echo ${SPOTIFY_BRANCH_VERSION} > ${SPOTIFY_VERSION_FILE} 2>&1
-      if [ ! -d ${SPOTIFY_CONFIG_PATH} ]; then
-      mkdir ${SPOTIFY_CONFIG_PATH}
+      wget -q ${SPOTIFY_DOWNLOAD_URL}
+      if [ -f ${SPOTIFY_TMP}/*.deb ];then
+        kodi-send --action="Notification(Spotify,Package download finished - installing Spotify.,5000,${SPOTIFY_ICON})"
+        ar -x *.deb 
+        tar -xzf data.tar.gz
+        mv usr/share/spotify ${SPOTIFY_PKG_PATH}
+        echo ${SPOTIFY_BRANCH_VERSION} > ${SPOTIFY_VERSION_FILE} 2>&1
+        rm -rf ${SPOTIFY_CACHE}
+        if [ ! -d ${SPOTIFY_CONFIG_PATH} ];then
+          mkdir ${SPOTIFY_CONFIG_PATH}
+        fi
+      else
+        echo -e "\n# Install: Could not download the Spotify package, could not install Spotify!" >> ${SPOTIFY_LOG} 2>&1
+        kodi-send --action="Notification(Spotify,Could not download the Spotify package - could not install Spotify!,6750,${SPOTIFY_ICON})"
       fi
       cd -
       rm -rf ${SPOTIFY_TMP}
@@ -141,16 +146,21 @@ spotify_update() {
         echo -e "####################################################################" >> ${SPOTIFY_LOG} 2>&1
 
         kodi-send --action="Notification(Spotify,An update to Spotify v${SPOTIFY_BRANCH_VERSION} is availabe - please stand by.,6000,${SPOTIFY_ICON})"
-        rm -rf ${SPOTIFY_CACHE}
+
         mkdir -p ${SPOTIFY_TMP} 
         cd ${SPOTIFY_TMP}
-        wget -q ${SPOTIFY_DOWNLOAD_URL} || exit 1
-        kodi-send --action="Notification(Spotify,Package download finished - updating Spotify.,5000,${SPOTIFY_ICON})"
-        ar -x *.deb 
-        tar -xzf data.tar.gz
-        rm -rf ${SPOTIFY_PKG_PATH}
-        mv usr/share/spotify ${SPOTIFY_PKG_PATH}
-        echo ${SPOTIFY_BRANCH_VERSION} > ${SPOTIFY_VERSION_FILE} 2>&1
+        wget -q ${SPOTIFY_DOWNLOAD_URL}
+        if [ -f ${SPOTIFY_TMP}/*.deb ];then
+          kodi-send --action="Notification(Spotify,Package download finished - updating Spotify.,5000,${SPOTIFY_ICON})"
+          ar -x *.deb 
+          tar -xzf data.tar.gz
+          rm -rf ${SPOTIFY_PKG_PATH}
+          mv usr/share/spotify ${SPOTIFY_PKG_PATH}
+          echo ${SPOTIFY_BRANCH_VERSION} > ${SPOTIFY_VERSION_FILE} 2>&1
+          rm -rf ${SPOTIFY_CACHE}
+        else
+          echo -e "\n# Update: Could not download the Spotify package, could not update Spotify!" >> ${SPOTIFY_LOG} 2>&1
+        fi
         cd - 
         rm -rf ${SPOTIFY_TMP}
       else
