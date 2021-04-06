@@ -126,3 +126,12 @@ msgstr ""
 msgctxt "#30403"
 msgid "Clean Spotify cache on startup"
 msgstr ""
+
+msgctxt "#30410"
+msgid "Brave Browser configuration"
+msgstr ""
+
+msgctxt "#30411"
+msgid "Enable "--test-type" flag"
+msgstr ""
+
