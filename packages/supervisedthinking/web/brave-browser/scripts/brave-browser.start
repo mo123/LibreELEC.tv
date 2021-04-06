@@ -107,13 +107,18 @@ brave_install() {
       kodi-send --action="Notification(Brave,Downloading & installing the Brave Browser package - please stand by.,6750,${BRAVE_ICON})"
       mkdir -p ${BRAVE_TMP}
       cd ${BRAVE_TMP}
-      wget -q ${BRAVE_DOWNLOAD_URL} || exit 1
-      kodi-send --action="Notification(Brave,Package download finished - installing Brave Browser.,5000,${BRAVE_ICON})"
-      ar -x *.deb 
-      tar -xJf data.tar.xz
-      mv opt/brave.com/brave ${BRAVE_PKG_PATH}
-      echo ${BRAVE_RELEASE_VERSION} > ${BRAVE_VERSION_FILE} 2>&1
-      cp usr/share/applications/brave-browser.desktop ${BRAVE_PKG_PATH}/
+      wget -q ${BRAVE_DOWNLOAD_URL}
+      if [ -f ${BRAVE_TMP}/brave-browser_${BRAVE_RELEASE_VERSION}_amd64.deb ];then
+        kodi-send --action="Notification(Brave,Package download finished - installing Brave Browser.,5000,${BRAVE_ICON})"
+        ar -x *.deb 
+        tar -xJf data.tar.xz
+        mv opt/brave.com/brave ${BRAVE_PKG_PATH}
+        echo ${BRAVE_RELEASE_VERSION} > ${BRAVE_VERSION_FILE} 2>&1
+        cp usr/share/applications/brave-browser.desktop ${BRAVE_PKG_PATH}/
+      else
+        echo -e "\n# Install: Could not download the Brave package, could not install Brave!" >> ${BRAVE_LOG} 2>&1
+        kodi-send --action="Notification(Brave,Could not download the Brave package - could not install Brave!,6750,${BRAVE_ICON})"
+      fi
       cd - 
       rm -rf ${BRAVE_TMP}
 
@@ -141,14 +146,18 @@ brave_update() {
         kodi-send --action="Notification(Brave,An update to Brave Browser v${BRAVE_RELEASE_VERSION} is availabe - please stand by.,6750,${BRAVE_ICON})"
         mkdir -p ${BRAVE_TMP}
         cd ${BRAVE_TMP}
-        wget -q ${BRAVE_DOWNLOAD_URL} || exit 1
-        kodi-send --action="Notification(Brave,Package download finished - updating Brave Browser.,5000,${BRAVE_ICON})"
-        ar -x *.deb 
-        tar -xJf data.tar.xz
-        rm -rf ${BRAVE_PKG_PATH}
-        mv opt/brave.com/brave ${BRAVE_PKG_PATH}
-        echo ${BRAVE_RELEASE_VERSION} > ${BRAVE_VERSION_FILE} 2>&1
-        cp usr/share/applications/brave-browser.desktop ${BRAVE_PKG_PATH}/
+        wget -q ${BRAVE_DOWNLOAD_URL}
+        if [ -f ${BRAVE_TMP}/brave-browser_${BRAVE_RELEASE_VERSION}_amd64.deb ];then
+          kodi-send --action="Notification(Brave,Package download finished - updating Brave Browser.,5000,${BRAVE_ICON})"
+          ar -x *.deb 
+          tar -xJf data.tar.xz
+          rm -rf ${BRAVE_PKG_PATH}
+          mv opt/brave.com/brave ${BRAVE_PKG_PATH}
+          echo ${BRAVE_RELEASE_VERSION} > ${BRAVE_VERSION_FILE} 2>&1
+          cp usr/share/applications/brave-browser.desktop ${BRAVE_PKG_PATH}/
+         else
+           echo -e "\n# Update: Could not download the Brave package, could not update Brave!" >> ${BRAVE_LOG} 2>&1
+         fi
         cd - 
         rm -rf ${BRAVE_TMP}
       else
