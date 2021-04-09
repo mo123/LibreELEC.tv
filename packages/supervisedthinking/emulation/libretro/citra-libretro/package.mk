@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="citra-libretro"
-PKG_VERSION="6350013630303c62f4f213ef86c81a941f7781b2"
+PKG_VERSION="5d1b3063383c0df46d286a108939bf5441549a29"
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/libretro/citra"
