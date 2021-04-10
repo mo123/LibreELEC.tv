@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="boom3"
-PKG_VERSION="2cd22cb5b4ab8e6e14d54c108b53f2545a52d444"
-PKG_SHA256="c2a9e942b6392243f8517a7b607c0942f3d63de0d3fb57230366bc51b5226ed1"
+PKG_VERSION="d532e0b76badc6b2fe89981a637dbf4ec02e0105"
+PKG_SHA256="f0995c1b2def1ff4c598cb5f36b2990c001a8a5a9c0942772b11f0793011027e"
 PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/libretro/boom3"
 PKG_URL="https://github.com/libretro/boom3/archive/${PKG_VERSION}.tar.gz"
