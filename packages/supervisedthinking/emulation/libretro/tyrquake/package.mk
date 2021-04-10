@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="tyrquake"
-PKG_VERSION="4a65bd117ef47a2de8e20b8c5a037a2fbbc3ee6a"
-PKG_SHA256="a0b1263447e77857e22e6dbe69981111f53a776f5f3213844f3ea5cd217dedcb"
+PKG_VERSION="f627174746989eaab940adc623b6a92a051c0c0b"
+PKG_SHA256="12f8169e2045a0c0c56d7f716b0f6565600b775ac9677dc7bbfb0d81aee28836"
 PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/libretro/tyrquake"
 PKG_URL="https://github.com/libretro/tyrquake/archive/${PKG_VERSION}.tar.gz"
