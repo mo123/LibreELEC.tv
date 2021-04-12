@@ -79,6 +79,7 @@ OEM_STREAMING_CLIENTS_ROCKCHIP=" \
 
 # Tools
 OEM_TOOLS_ROCKCHIP=" \
+  apitrace \
   dhrystone-benchmark \
   ds4drv \
   evtest \
