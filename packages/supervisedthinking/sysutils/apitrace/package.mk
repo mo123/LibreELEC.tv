@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="apitrace"
-PKG_VERSION="9.0"
-PKG_SHA256="0eec81ba7d3799622336319785465a2982a0621898842517a07894d7e2aa18eb"
+PKG_VERSION="10.0"
+PKG_SHA256="2e57d37af39369d7ce78666acb8afb1a49ec758f683a21077ec39eb0befae4ad"
 PKG_LICENSE="MIT"
 PKG_SITE="https://apitrace.github.io/"
 PKG_URL="https://github.com/apitrace/apitrace/archive/refs/tags/${PKG_VERSION}.tar.gz"
