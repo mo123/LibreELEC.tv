@@ -14,6 +14,8 @@ configure_package() {
   # Displayserver Support
   if [ "${DISPLAYSERVER}" = "x11" ]; then
     PKG_DEPENDS_TARGET+=" xorg-server"
+  else
+    PKG_DEPENDS_TARGET+=" waffle"
   fi
 
   # Add depends for OpenGL / OpenGLES support
@@ -29,6 +31,7 @@ pre_configure_target() {
   PKG_CMAKE_OPTS_TARGET="-DENABLE_GUI=off"
 
   if [ ! "${DISPLAYSERVER}" = "x11" ]; then
-    PKG_CMAKE_OPTS_TARGET+=" -DENABLE_X11=off"
+    PKG_CMAKE_OPTS_TARGET+=" -DENABLE_X11=off \
+                             -D ENABLE_WAFFLE=on"
   fi
 }
