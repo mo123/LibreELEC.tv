@@ -11,14 +11,26 @@ PKG_DEPENDS_TARGET="toolchain linux glibc systemd dbus zlib pulseaudio ffmpeg me
 PKG_LONGDESC="Citra is an experimental open-source Nintendo 3DS emulator/debugger written in C++"
 GET_HANDLER_SUPPORT="git"
 
+configure_package() {
+  # Add fdk-aac for HLE AAC decoding support
+  if [ "${NON_FREE_PKG_SUPPORT}" = "yes" ]; then
+    PKG_DEPENDS_TARGET+=" fdk-aac"
+  fi
+}
+
 pre_configure_target() {
-  PKG_CMAKE_OPTS_TARGET="-D ENABLE_SDL2=1 \
-                         -D ENABLE_QT=1 \
-                         -D ENABLE_CUBEB=0 \
-                         -D ENABLE_FFMPEG=1 \
-                         -D ENABLE_WEB_SERVICE=0 \
-                         -D CMAKE_NO_SYSTEM_FROM_IMPORTED=1 \
-                         -D CMAKE_VERBOSE_MAKEFILE=1"
+  PKG_CMAKE_OPTS_TARGET="-D ENABLE_SDL2=ON \
+                         -D ENABLE_QT=ON \
+                         -D ENABLE_WEB_SERVICE=OFF \
+                         -D ENABLE_CUBEB=ON \
+                         -D ENABLE_FFMPEG_VIDEO_DUMPER=ON"
+
+  # Conditionally enable HLE AAC decoding support
+  if [ "${NON_FREE_PKG_SUPPORT}" = "yes" ]; then
+    PKG_CMAKE_OPTS_TARGET+=" -D ENABLE_FDK=ON"
+  else
+    PKG_CMAKE_OPTS_TARGET+=" -D ENABLE_FFMPEG_AUDIO_DECODER=ON"
+  fi
 }
 
 pre_make_target() {
