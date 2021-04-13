@@ -1,0 +1,11 @@
+[Unit]
+Description=Xbox One Wireless Dongle Driver
+Requires=graphical.target
+After=graphical.target
+
+[Service]
+ExecStart=/usr/bin/xow
+Restart=on-success
+
+[Install]
+WantedBy=multi-user.target
