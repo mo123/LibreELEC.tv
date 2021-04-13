@@ -39,5 +39,5 @@
   # Install tools e.g. additional tools like mc or htop (yes / no)
   OEM_TOOLS="yes"
 
-  # Add non-free packages i.e. fdk-aac (yes / no)
+  # Add non-free packages i.e. fdk-aac, xow (yes / no)
   NON_FREE_PKG_SUPPORT="no"
