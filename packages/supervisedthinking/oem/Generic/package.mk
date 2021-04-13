@@ -100,7 +100,7 @@ OEM_LINUX_KERNEL_DRIVERS_GENERIC=" \
 
 # Non free packages
 OEM_NON_FREE_PACKAGES_GENERIC=" \
-  fdk-aac"
+  xow"
 
 # Streaming clients
 OEM_STREAMING_CLIENTS_GENERIC=" \

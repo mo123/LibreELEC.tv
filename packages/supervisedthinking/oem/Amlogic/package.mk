@@ -82,7 +82,7 @@ OEM_LINUX_KERNEL_DRIVERS_AMLOGIC=" \
 
 # Non free packages
 OEM_NON_FREE_PACKAGES_AMLOGIC=" \
-  fdk-aac"
+  xow"
 
 # Streaming clients
 OEM_STREAMING_CLIENTS_AMLOGIC=" \

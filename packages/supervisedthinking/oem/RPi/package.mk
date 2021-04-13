@@ -77,7 +77,7 @@ OEM_LINUX_KERNEL_DRIVERS_RPI=" \
 
 # Non free packages
 OEM_NON_FREE_PACKAGES_RPI=" \
-  fdk-aac"
+  xow"
 
 # Streaming clients
 OEM_STREAMING_CLIENTS_RPI=" \

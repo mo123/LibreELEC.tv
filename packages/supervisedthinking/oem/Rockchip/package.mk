@@ -79,7 +79,7 @@ OEM_LINUX_KERNEL_DRIVERS_ROCKCHIP=" \
 
 # Non free packages
 OEM_NON_FREE_PACKAGES_ROCKCHIP=" \
-  fdk-aac"
+  xow"
 
 # Streaming clients
 OEM_STREAMING_CLIENTS_ROCKCHIP=" \
