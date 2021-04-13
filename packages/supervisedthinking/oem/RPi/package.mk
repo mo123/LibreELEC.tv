@@ -2,7 +2,7 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="RPi"
-PKG_VERSION="1.0.3"
+PKG_VERSION="1.0.4"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://bit.ly/3vL5rH3"
 PKG_DEPENDS_TARGET="toolchain"
@@ -71,6 +71,14 @@ OEM_EMULATORS_STANDALONE_RPI=" \
 OEM_FRONTENDS_EXTRA_RPI=" \
   pegasus-frontend"
 
+# Linux drivers
+OEM_LINUX_KERNEL_DRIVERS_RPI=" \
+  xpadneo"
+
+# Non free packages
+OEM_NON_FREE_PACKAGES_RPI=" \
+  fdk-aac"
+
 # Streaming clients
 OEM_STREAMING_CLIENTS_RPI=" \
   moonlight-qt" 
@@ -114,6 +122,16 @@ configure_package() {
     # Add Retroarch frontend & libretro core packages 
     if [ "${OEM_LIBRETRO}" = "yes" ]; then
       PKG_DEPENDS_TARGET+=" ${OEM_EMULATORS_LIBRETRO_RPI}"
+    fi
+
+    # Add Linux driver packages
+    if [ "${OEM_LINUX_KERNEL_DRIVER_SUPPORT}" = "yes" ]; then
+      PKG_DEPENDS_TARGET+=" ${OEM_LINUX_KERNEL_DRIVERS_RPI}"
+    fi
+
+    # Add non free packages
+    if [ "${NON_FREE_PKG_SUPPORT}" = "yes" ]; then
+      PKG_DEPENDS_TARGET+=" ${OEM_NON_FREE_PACKAGES_RPI}"
     fi
 
     # Add streaming packages

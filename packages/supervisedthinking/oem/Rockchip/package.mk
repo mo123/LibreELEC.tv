@@ -2,7 +2,7 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="Rockchip"
-PKG_VERSION="1.0.2"
+PKG_VERSION="1.0.3"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://bit.ly/3vL5rH3"
 PKG_DEPENDS_TARGET="toolchain"
@@ -73,6 +73,14 @@ OEM_EMULATORS_STANDALONE_ROCKCHIP=" \
 OEM_FRONTENDS_EXTRA_ROCKCHIP=" \
   pegasus-frontend"
 
+# Linux drivers
+OEM_LINUX_KERNEL_DRIVERS_ROCKCHIP=" \
+  xpadneo"
+
+# Non free packages
+OEM_NON_FREE_PACKAGES_ROCKCHIP=" \
+  fdk-aac"
+
 # Streaming clients
 OEM_STREAMING_CLIENTS_ROCKCHIP=" \
   moonlight-qt" 
@@ -118,9 +126,19 @@ configure_package() {
       PKG_DEPENDS_TARGET+=" ${OEM_EMULATORS_LIBRETRO_ROCKCHIP}"
     fi
 
+    # Add Linux driver packages
+    if [ "${OEM_LINUX_KERNEL_DRIVER_SUPPORT}" = "yes" ]; then
+      PKG_DEPENDS_TARGET+=" ${OEM_LINUX_KERNEL_DRIVERS_ROCKCHIP}"
+    fi
+
+    # Add non free packages
+    if [ "${NON_FREE_PKG_SUPPORT}" = "yes" ]; then
+      PKG_DEPENDS_TARGET+=" ${OEM_NON_FREE_PACKAGES_ROCKCHIP}"
+    fi
+
     # Add streaming packages
     if [ "${OEM_STREAMING_CLIENTS}" = "yes" ]; then
-      PKG_DEPENDS_TARGET+=" ${OEM_STREAMING_CLIENTS_AMLOGIC}"
+      PKG_DEPENDS_TARGET+=" ${OEM_STREAMING_CLIENTS_ROCKCHIP}"
     fi
 
     # Add tool packages

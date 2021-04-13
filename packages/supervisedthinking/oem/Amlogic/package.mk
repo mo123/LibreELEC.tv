@@ -2,7 +2,7 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="Amlogic"
-PKG_VERSION="1.0.2"
+PKG_VERSION="1.0.3"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://bit.ly/3vL5rH3"
 PKG_DEPENDS_TARGET="toolchain"
@@ -76,6 +76,14 @@ OEM_EMULATORS_STANDALONE_AMLOGIC=" \
 OEM_FRONTENDS_EXTRA_AMLOGIC=" \
   pegasus-frontend"
 
+# Linux drivers
+OEM_LINUX_KERNEL_DRIVERS_AMLOGIC=" \
+  xpadneo"
+
+# Non free packages
+OEM_NON_FREE_PACKAGES_AMLOGIC=" \
+  fdk-aac"
+
 # Streaming clients
 OEM_STREAMING_CLIENTS_AMLOGIC=" \
   moonlight-qt" 
@@ -123,6 +131,16 @@ configure_package() {
       if [ "${DEVICE}" = "AMLG12B" ]; then
         PKG_DEPENDS_TARGET+=" ${OEM_EMULATORS_LIBRETRO_AMLOGIC_AMLG12B}"
       fi
+    fi
+
+    # Add Linux driver packages
+    if [ "${OEM_LINUX_KERNEL_DRIVER_SUPPORT}" = "yes" ]; then
+      PKG_DEPENDS_TARGET+=" ${OEM_LINUX_KERNEL_DRIVERS_AMLOGIC}"
+    fi
+
+    # Add non free packages
+    if [ "${NON_FREE_PKG_SUPPORT}" = "yes" ]; then
+      PKG_DEPENDS_TARGET+=" ${OEM_NON_FREE_PACKAGES_AMLOGIC}"
     fi
 
     # Add streaming packages
