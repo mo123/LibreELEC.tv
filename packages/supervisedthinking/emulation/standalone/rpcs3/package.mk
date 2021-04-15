@@ -2,15 +2,29 @@
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="rpcs3"
-PKG_VERSION="99d6f9c7a91acec0905fdd72e8fe19aadcbc4960" # v0.0.15+
+PKG_VERSION="408ffd3d2cbb34a28c5e369f1692bf12a8c975ff" # v0.0.15+
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://rpcs3.net"
 PKG_URL="https://github.com/RPCS3/rpcs3.git"
-PKG_DEPENDS_TARGET="toolchain linux glibc systemd pulseaudio llvm mesa xorg-server openal-soft-system libevdev curl ffmpeg libpng zlib vulkan-loader glew-cmake libSM sdl2 enet-system qt-everywhere unclutter-xfixes"
+PKG_DEPENDS_TARGET="toolchain linux glibc systemd pulseaudio mesa xorg-server openal-soft-system libevdev curl ffmpeg libpng zlib vulkan-loader glew-cmake libSM sdl2 enet-system qt-everywhere unclutter-xfixes rpcs3:host"
 PKG_LONGDESC="RPCS3 is an experimental open-source Sony PlayStation 3 emulator and debugger."
 GET_HANDLER_SUPPORT="git"
 PKG_BUILD_FLAGS="+lto"
+
+pre_configure_host() {
+  PKG_CMAKE_SCRIPT="${PKG_BUILD}/llvm/CMakeLists.txt"
+  PKG_CMAKE_OPTS_HOST="-D LLVM_TARGETS_TO_BUILD="X86" \
+                       -D LLVM_BUILD_RUNTIME=OFF \
+                       -D LLVM_BUILD_TOOLS=OFF \
+                       -D LLVM_INCLUDE_BENCHMARKS=OFF \
+                       -D LLVM_INCLUDE_DOCS=OFF \
+                       -D LLVM_INCLUDE_EXAMPLES=OFF \
+                       -D LLVM_INCLUDE_TESTS=OFF \
+                       -D LLVM_INCLUDE_TOOLS=OFF \
+                       -D LLVM_INCLUDE_UTILS=OFF \
+                       -D LLVM_CCACHE_BUILD=ON"
+}
 
 pre_configure_target() {
   PKG_CMAKE_OPTS_TARGET="-D USE_NATIVE_INSTRUCTIONS=OFF \
@@ -18,16 +32,21 @@ pre_configure_target() {
                          -D CMAKE_C_FLAGS="${CFLAGS}" \
                          -D CMAKE_CXX_FLAGS="${CXXFLAGS}" \
                          -D LLVM_TARGET_ARCH="${TARGET_ARCH}" \
-                         -D LLVM_TABLEGEN=${TOOLCHAIN}/bin/llvm-tblgen \
+                         -D LLVM_TABLEGEN=${PKG_BUILD}/.${HOST_NAME}/bin/llvm-tblgen \
                          -D USE_DISCORD_RPC=OFF \
                          -D CMAKE_SKIP_RPATH=ON \
                          -D USE_SYSTEM_FFMPEG=ON \
                          -D USE_SYSTEM_LIBPNG=ON \
                          -D USE_SYSTEM_ZLIB=ON \
                          -D USE_SYSTEM_CURL=ON"
+}
 
-  # fix missing llvm/test subdir
-  sed -e "/add_subdirectory(test)/d" -i ${PKG_BUILD}/llvm/CMakeLists.txt
+make_host() {
+  ninja ${NINJA_OPTS} llvm-tblgen
+}
+
+makeinstall_host() {
+ :
 }
 
 pre_make_target() {
