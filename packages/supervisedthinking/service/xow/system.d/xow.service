@@ -1,7 +1,7 @@
 [Unit]
 Description=Xbox One Wireless Dongle Driver
-Requires=graphical.target
-After=graphical.target
+Requires=bluetooth.service
+After=bluetooth.service
 
 [Service]
 ExecStart=/usr/bin/xow
