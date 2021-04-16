@@ -20,4 +20,7 @@ make_target() {
 makeinstall_target() {
   mkdir -p ${INSTALL}/$(get_full_module_dir)/kernel/drivers/hid
    cp -rv ${PKG_BUILD}/hid-xpadneo/src/*.ko ${INSTALL}/$(get_full_module_dir)/kernel/drivers/hid
+
+  # Install modprobe.d config files
+  cp -PRv ${PKG_DIR}/config/* ${INSTALL}
 }
