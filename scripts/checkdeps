@@ -173,6 +173,8 @@ case "${DISTRO}" in
         [rpcgen]=rpcsvc-proto
         [xa]=xa
         [makeinfo]=texinfo
+        [cabextract]=cabextract
+        [curl]=curl
       )
       perl_map+=(
         [JSON]=perl-json
@@ -214,6 +216,8 @@ case "${DISTRO}" in
         [python3]=python3
         [xa]=xa65
         [makeinfo]=texinfo
+        [cabextract]=cabextract
+        [curl]=curl
       )
       ;;
 esac
