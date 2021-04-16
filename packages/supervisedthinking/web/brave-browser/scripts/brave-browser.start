@@ -182,6 +182,7 @@ brave_run() {
 
     kodictrl --mute
     systemctl stop pulseaudio
+    set_refresh_rate_BRAVE
 
     ${BRAVE_PKG_PATH}/brave ${BRAVE_USER_FLAGS} "$@" >> ${BRAVE_LOG} 2>&1
 
