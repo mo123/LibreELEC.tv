@@ -16,6 +16,7 @@
     <setting id="RR_SPOTIFY_BRANCH"               default="true">stable</setting>
     <setting id="RR_SPOTIFY_CLEAN_CACHE"          default="true">false</setting>
     <setting id="RR_BRAVE_TEST_TYPE"              default="true">false</setting>
+    <setting id="RR_BRAVE_REFRESH_RATE"           default="true">60Hz</setting>
 </settings>
 
 

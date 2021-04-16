@@ -1,3 +1,6 @@
+109
+- Added refresh rate settings for Brave
+
 108
 - Add test type flag for Brave Browser
 

@@ -40,5 +40,6 @@
     <setting label="30410" type="lsep"/>
     <setting type="sep" />
     <setting id="RR_BRAVE_TEST_TYPE"     type="bool"   label="30411"                     default="false"/>
+    <setting id="RR_BRAVE_REFRESH_RATE"  type="select" label="30412" values="60Hz|50Hz"  default="60Hz"/>
   </category>
 </settings>

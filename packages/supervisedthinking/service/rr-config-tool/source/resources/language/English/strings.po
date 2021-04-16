@@ -135,3 +135,6 @@ msgctxt "#30411"
 msgid "Enable "--test-type" flag"
 msgstr ""
 
+msgctxt "#30412"
+msgid "Brave refresh rate [PAL 50Hz | NTSC 60Hz]"
+msgstr ""
