@@ -27,7 +27,7 @@ PKG_MESON_OPTS_TARGET="-D x11_backend=true \
 pre_configure_target() {
   # ${TOOLCHAIN}/bin/glib-compile-resources requires ${TOOLCHAIN}/lib/libffi.so.6
   export LD_LIBRARY_PATH="${TOOLCHAIN}/lib:${LD_LIBRARY_PATH}"
-  export GLIB_COMPILE_RESOURCES=glib-compile-resources GLIB_MKENUMS=glib-mkenums GLIB_GENMARSHAL=glib-genmarshal
+  export GLIB_COMPILE_RESOURCES=glib-compile-resources GLIB_MKENUMS=glib-mkenums GLIB_GENMARSHAL=glib-genmarshal GDK_PIXBUF_PIXDATA=${SYSROOT_PREFIX}/usr/bin/gdk-pixbuf-pixdata
 }
 
 post_makeinstall_target() {
