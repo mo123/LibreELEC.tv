@@ -175,6 +175,7 @@ case "${DISTRO}" in
         [makeinfo]=texinfo
         [cabextract]=cabextract
         [curl]=curl
+        [gdk-pixbuf-pixdata]=[gdk-pixbuf2]
       )
       perl_map+=(
         [JSON]=perl-json
@@ -218,6 +219,7 @@ case "${DISTRO}" in
         [makeinfo]=texinfo
         [cabextract]=cabextract
         [curl]=curl
+        [gdk-pixbuf-pixdata]=[libgdk-pixbuf2.0-bin]
       )
       ;;
 esac
