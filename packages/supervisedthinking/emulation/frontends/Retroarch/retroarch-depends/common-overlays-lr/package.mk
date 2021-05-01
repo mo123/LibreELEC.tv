@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="common-overlays-lr"
-PKG_VERSION="199019e120c321e667040c1a09ff9535e1547711"
-PKG_SHA256="7ad6cf6a0e1adae269c3ba2997231489240012614168e5fabf541b3679650d52"
+PKG_VERSION="5ec925429119deb5b68e83af3b992f5a1d55e77d"
+PKG_SHA256="80885527baf7d6901ef17c557b4f64fc8cbdec56360a42db6aeff61e10c0a4d7"
 PKG_LICENSE="CC-BY-4.0 License"
 PKG_SITE="https://github.com/libretro/common-overlays"
 PKG_URL="https://github.com/libretro/common-overlays/archive/${PKG_VERSION}.tar.gz"
