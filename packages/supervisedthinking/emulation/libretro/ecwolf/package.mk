@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="ecwolf"
-PKG_VERSION="afb9a5416cbcd6cb1b6c4e8fe67c6ac506922a3b"
-PKG_SHA256="c3b4b05eabc47e51e5aa42cc5e218c1b12fecd8244aa09a884831f09f676dded"
+PKG_VERSION="fe041979e5e51b2ca0c90bb40ea6acf79714c3c7"
+PKG_SHA256="6fd15d3c209ac46175c9a7020fc2b1a5eda454fd21bd87a71caf84c009c73592"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/libretro/ecwolf"
 PKG_URL="https://github.com/libretro/ecwolf/archive/${PKG_VERSION}.tar.gz"
