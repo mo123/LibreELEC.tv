@@ -2,13 +2,13 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="fbneo"
-PKG_VERSION="e9e8049fd47b203a5035169beda2711265b1ce12"
-PKG_SHA256="c912591749ba29f3136361519dc8c3c812accfde288242e388e19289af67f54d"
+PKG_VERSION="1.0.0.02"
+PKG_SHA256="04cf5bf7408ab5493d1c1a35d970a9110c8e97b2c1aa568727b95ae2a4525cd8"
 PKG_LICENSE="OSS"
 PKG_SITE="https://github.com/libretro/FBNeo"
-PKG_URL="https://github.com/libretro/FBNeo/archive/${PKG_VERSION}.tar.gz"
+PKG_URL="https://github.com/libretro/FBNeo/archive/refs/tags/v${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc"
-PKG_LONGDESC="A libretro port of FinalBurn Neo for Romset v1.0.0.1"
+PKG_LONGDESC="A libretro port of FinalBurn Neo for Romset v1.0.0.02"
 PKG_TOOLCHAIN="make"
 PKG_BUILD_FLAGS="-gold +lto -sysroot"
 
