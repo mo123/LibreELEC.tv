@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="duckstation"
-PKG_VERSION="e414aeb2571a80b2eda09535d7a279774294f0c7" #v0.1+
-PKG_SHA256="1361895b32865a4d4c3d8f145bf250a73f7e99f15de79bc1ab8dc65700bda2f2"
+PKG_VERSION="5b6a1706e4f381bd0b85185a11fd487ecc6b4757" #v0.1+
+PKG_SHA256="b95fdedd24a9ff473606830e56a7245dde779882f14ff9e1ff153b077c56042b"
 PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/libretro/duckstation"
 PKG_URL="https://github.com/libretro/duckstation/archive/${PKG_VERSION}.tar.gz"
