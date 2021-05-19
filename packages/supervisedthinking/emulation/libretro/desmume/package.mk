@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="desmume"
-PKG_VERSION="2ed78e2cece0bb9978fd64d37b17049ce2495c37"
-PKG_SHA256="450bad42f90880ec759582c3b2f58af9cee6061965048e278c789cd9a70a43eb"
+PKG_VERSION="0bc055a126a3a5c2a9d0be3181edcc571dcb8ca6"
+PKG_SHA256="4963cb8e37038321d7f1ce72b873a5ad2e494853043828e390da7dbda0bfccd1"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/libretro/desmume"
 PKG_URL="https://github.com/libretro/desmume/archive/${PKG_VERSION}.tar.gz"
