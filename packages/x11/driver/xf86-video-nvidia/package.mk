@@ -6,8 +6,8 @@ PKG_NAME="xf86-video-nvidia"
 # Remember to run "python3 packages/x11/driver/xf86-video-nvidia/scripts/make_nvidia_udev.py" and commit changes to
 # "packages/x11/driver/xf86-video-nvidia/udev.d/96-nvidia.rules" whenever bumping version.
 # Host may require installation of python3-lxml and python3-requests packages.
-PKG_VERSION="460.73.01"
-PKG_SHA256="aed95f08df638025b68e9f6551ebf7c31d802fe5c87588219fb602f5a4ea0544"
+PKG_VERSION="460.80"
+PKG_SHA256="0af53b7d06c88359c8abaa42288b762292bb43d9a70efdb531341ce3979fe8f9"
 PKG_ARCH="x86_64"
 PKG_LICENSE="nonfree"
 PKG_SITE="http://www.nvidia.com/"
