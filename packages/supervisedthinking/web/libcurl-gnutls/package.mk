@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="libcurl-gnutls"
-PKG_VERSION="7_76_1"
-PKG_SHA256="90d31a1ec2abdf78563e9b365f33404ce83ce72c533072c95158a25d177e2aae"
+PKG_VERSION="7_77_0"
+PKG_SHA256="c83858f307634d6f5d6a3b7cbcb9716ecf3e44a45dba95b2b79f4e08bbbec533"
 PKG_LICENSE="MIT"
 PKG_SITE="http://curl.haxx.se"
 PKG_URL="https://github.com/curl/curl/archive/curl-${PKG_VERSION}.tar.gz"
