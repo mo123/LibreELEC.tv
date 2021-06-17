@@ -1,3 +1,18 @@
+From 7f883dbfd1421cf4e0ed8b4c01c6e8527210e900 Mon Sep 17 00:00:00 2001
+From: dengkx <1498971779@qq.com>
+Date: Thu, 17 Jun 2021 14:44:40 +0800
+Subject: [PATCH] RK3399: add roc-pc-plus
+
+---
+ arch/arm64/boot/dts/rockchip/Makefile         |   1 +
+ .../boot/dts/rockchip/rk3399-roc-pc-plus.dts  | 282 ++++++++++++++++++
+ .../boot/dts/rockchip/rk3399-roc-pc.dtsi      |  37 ++-
+ arch/arm64/boot/dts/rockchip/rk3399.dtsi      |   8 +-
+ kernel/irq/manage.c                           |   2 +
+ sound/soc/codecs/es8328.c                     | 114 +++++++
+ 6 files changed, 437 insertions(+), 7 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts
+
 diff --git a/arch/arm64/boot/dts/rockchip/Makefile b/arch/arm64/boot/dts/rockchip/Makefile
 index 26661c7b736b..102539d3a112 100644
 --- a/arch/arm64/boot/dts/rockchip/Makefile
@@ -12,7 +27,7 @@ index 26661c7b736b..102539d3a112 100644
  dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3399-rock-pi-4c.dtb
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts
 new file mode 100644
-index 000000000000..f0c91db3f261
+index 000000000000..c9158520ee23
 --- /dev/null
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts
 @@ -0,0 +1,282 @@
@@ -63,7 +78,7 @@ index 000000000000..f0c91db3f261
 +		compatible = "regulator-fixed";
 +		regulator-name = "vcc_wifi";
 +		enable-active-high;
-+    	gpio = <&gpio2 4 GPIO_ACTIVE_HIGH>;
++		gpio = <&gpio2 4 GPIO_ACTIVE_HIGH>;
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&vcc_wifi_h>;
 +		regulator-always-on;
@@ -229,8 +244,8 @@ index 000000000000..f0c91db3f261
 +            rockchip,pins = <4 0 1 &pcfg_pull_none>;
 +        };
 +    };*/
-+    
-+    	ngff {
++
++	ngff {
 +		vcc3v3_ngff_en: vcc3v3-ngff-en {
 +			rockchip,pins = <4 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
 +		};
@@ -299,15 +314,15 @@ index 000000000000..f0c91db3f261
 +};
 +*/
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-index 20309076dbac..2c20f656eac2 100644
+index 20309076dbac..66a4ce3b6b7c 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
 @@ -79,7 +79,7 @@
- 
+
  		yellow_led: led-2 {
  			label = "yellow:yellow-led";
 -			gpios = <&gpio0 RK_PA2 GPIO_ACTIVE_HIGH>;
-+            gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
++			gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
  			default-state = "off";
  			linux,default-trigger = "mmc1";
  		};
@@ -321,16 +336,33 @@ index 20309076dbac..2c20f656eac2 100644
  		regulator-name = "vcc_sys";
  		regulator-boot-on;
  		regulator-min-microvolt = <5000000>;
-@@ -612,7 +609,7 @@
+@@ -385,6 +382,7 @@
+ 			vcc_sdio: LDO_REG4 {
+ 				regulator-name = "vcc_sdio";
+ 				regulator-boot-on;
++				regulator-always-on;
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <3000000>;
+ 				regulator-state-mem {
+@@ -488,6 +486,8 @@
+ 		regulator-min-microvolt = <712500>;
+ 		regulator-max-microvolt = <1500000>;
+ 		regulator-ramp-delay = <1000>;
++		regulator-always-on;
++		regulator-boot-on;
+ 		vin-supply = <&vcc3v3_sys>;
+
+ 		regulator-state-mem {
+@@ -612,7 +612,7 @@
  		};
- 
+
  		yellow_led_pin: yellow-led-pin {
 -			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
-+            rockchip,pins = <0 13 RK_FUNC_GPIO &pcfg_pull_none>;
++			rockchip,pins = <0 13 RK_FUNC_GPIO &pcfg_pull_none>;
  		};
  	};
- 
-@@ -820,3 +817,32 @@
+
+@@ -820,3 +820,30 @@
  &vopl_mmu {
  	status = "okay";
  };
@@ -361,10 +393,8 @@ index 20309076dbac..2c20f656eac2 100644
 +            <0xe5   KEY_RIGHT>;
 +    };
 +};
-+
-+
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index 7e69603fb41c..06de33f7e551 100644
+index 7e69603fb41c..fa0ed95af70d 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
 @@ -2241,9 +2241,13 @@
@@ -376,12 +406,12 @@ index 7e69603fb41c..06de33f7e551 100644
 +					<3 RK_PD7 1 &pcfg_pull_none>;
 +					//<4 RK_PA0 1 &pcfg_pull_none>;
  			};
-+            i2s_8ch_mclk: i2s-8ch-mclk {
-+                rockchip,pins = <4 0 1 &pcfg_pull_none>;
-+            };
-+ 
++			i2s_8ch_mclk: i2s-8ch-mclk {
++				rockchip,pins = <4 0 1 &pcfg_pull_none>;
++			};
++
  		};
- 
+
  		i2s1 {
 diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
 index 79dc02b956dc..357fd7671244 100644
@@ -390,7 +420,7 @@ index 79dc02b956dc..357fd7671244 100644
 @@ -386,6 +386,8 @@ int __irq_set_affinity(unsigned int irq, const struct cpumask *mask, bool force)
  	return ret;
  }
- 
+
 +EXPORT_SYMBOL_GPL(__irq_set_affinity);
 +
  int irq_set_affinity_hint(unsigned int irq, const struct cpumask *m)
@@ -407,7 +437,7 @@ index 7e26231a596a..9d89024ff0d6 100644
 +#include <linux/of_gpio.h>
 +#include <linux/gpio.h>
  #include "es8328.h"
- 
+
 +#define INVALID_GPIO		   -1
 +#define ES8328_CODEC_SET_HP		1
 +
@@ -427,7 +457,7 @@ index 7e26231a596a..9d89024ff0d6 100644
 +    bool hp_gpio_level;
 +    bool hp_det_level;
  };
- 
+
 +static struct es8328_priv *es8328_private;
 +
  /*
@@ -436,7 +466,7 @@ index 7e26231a596a..9d89024ff0d6 100644
 @@ -112,6 +127,42 @@ static const struct {
  	{ 48000, ES8328_DACCONTROL6_DEEMPH_48k },
  };
- 
+
 +static int es8328_set_gpio(int gpio, bool level)
 +{
 +	struct es8328_priv *es8328 = es8328_private;
@@ -477,7 +507,7 @@ index 7e26231a596a..9d89024ff0d6 100644
  {
  	struct es8328_priv *es8328 = snd_soc_component_get_drvdata(component);
 @@ -451,6 +502,14 @@ static const struct snd_soc_dapm_route es8328_dapm_routes[] = {
- 
+
  static int es8328_mute(struct snd_soc_dai *dai, int mute, int direction)
  {
 +    struct es8328_priv *es8328 = snd_soc_component_get_drvdata(dai->component);
@@ -494,15 +524,15 @@ index 7e26231a596a..9d89024ff0d6 100644
 @@ -795,6 +854,21 @@ static int es8328_component_probe(struct snd_soc_component *component)
  		goto clk_fail;
  	}
- 
+
 +    if (es8328->hp_det_gpio != INVALID_GPIO) {
 +		if (gpio_get_value(es8328->hp_det_gpio) == es8328->hp_det_level)
 +			es8328->hp_inserted = 1;
 +	} else {
 +        es8328->hp_inserted = 1;
 +    }
-+        
-+ 
++
++
 +    if (!strncmp(component->dev->of_node->name, "es8388", 6)) {
 +        usleep_range(18000, 20000);
 +        snd_soc_component_update_bits(component, ES8328_DACCONTROL17,
@@ -511,7 +541,7 @@ index 7e26231a596a..9d89024ff0d6 100644
 +			    ES8328_DACCONTROL20_RD2RO, ES8328_DACCONTROL20_RD2RO);
 +    }
  	return 0;
- 
+
  clk_fail:
 @@ -850,6 +924,8 @@ int es8328_probe(struct device *dev, struct regmap *regmap)
  	struct es8328_priv *es8328;
@@ -519,21 +549,21 @@ index 7e26231a596a..9d89024ff0d6 100644
  	int i;
 +    int hp_irq = 0;
 +    enum of_gpio_flags flags;
- 
+
  	if (IS_ERR(regmap))
  		return PTR_ERR(regmap);
 @@ -859,6 +935,7 @@ int es8328_probe(struct device *dev, struct regmap *regmap)
  		return -ENOMEM;
- 
+
  	es8328->regmap = regmap;
 +    es8328_private = es8328;
- 
+
  	for (i = 0; i < ARRAY_SIZE(es8328->supplies); i++)
  		es8328->supplies[i].supply = supply_names[i];
 @@ -870,6 +947,43 @@ int es8328_probe(struct device *dev, struct regmap *regmap)
  		return ret;
  	}
- 
+
 +    es8328->hp_ctl_gpio = of_get_named_gpio_flags(dev->of_node, "hp-ctl-gpio", 0, &flags);
 +	if (es8328->hp_ctl_gpio < 0) {
 +		dev_info(dev, "Can not read property hp_ctl_gpio\n");
@@ -563,7 +593,7 @@ index 7e26231a596a..9d89024ff0d6 100644
 +
 +		if (hp_irq) {
 +			ret = devm_request_threaded_irq(dev, hp_irq, NULL, hp_det_irq_handler,
-+					IRQ_TYPE_EDGE_BOTH | IRQF_ONESHOT, dev->of_node->name, NULL);
++					IRQ_TYPE_EDGE_BOTH | IRQF_ONESHOT, "ES8323", NULL);
 +			if (ret < 0) {
 +				dev_err(dev, "request_irq failed: %d\n", ret);
 +				return ret;
@@ -572,5 +602,8 @@ index 7e26231a596a..9d89024ff0d6 100644
 +	}
 +
  	dev_set_drvdata(dev, es8328);
- 
+
  	return devm_snd_soc_register_component(dev,
+--
+2.20.1
+

@@ -4,7 +4,7 @@
 
 PKG_NAME="RTL8723DU"
 PKG_VERSION="9690f34fc2603d04b53432df4e3d6c282f3d1ca6"
-PKG_SHA256="f5df8e3fd311a24717aba9bcc2e64e3fc1103ae88fc60d04376d20f3bede3b31"
+PKG_SHA256="7457125ff85d66c281a2c0eb19bf0ee7a8b4798c7100a786052895b21b626eb7"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/lwfinger/rtl8723du"
 PKG_URL="https://github.com/lwfinger/rtl8723du/archive/${PKG_VERSION}.tar.gz"
