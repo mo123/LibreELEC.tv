@@ -18,5 +18,5 @@ This is a SoC device for RK3399
 * `PROJECT=Rockchip DEVICE=RK3399 ARCH=arm UBOOT_SYSTEM=sapphire make image`
 
 If you need to build roc-pc-plus image,must also change LibreELEC.tv/distributions/LibreELEC/options
-otherwise RTK8723DU wifi and Remotectl driver isn't build
-ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU RTL8723DU Remotectl"
+otherwise RTL8723DU wifi and driver isn't build
+ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU RTL8723DU"
