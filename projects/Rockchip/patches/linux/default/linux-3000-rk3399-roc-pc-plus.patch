@@ -1,15 +1,15 @@
-From 6af8becfd6eb7190f7cb959789ca37c77ce84d8b Mon Sep 17 00:00:00 2001
+From 151e558b2b554f8ccf36eb583f37a50ff741b87d Mon Sep 17 00:00:00 2001
 From: dengkx <1498971779@qq.com>
-Date: Thu, 17 Jun 2021 20:54:14 +0800
+Date: Fri, 18 Jun 2021 09:45:55 +0800
 Subject: [PATCH] RK3399: add roc-pc-plus
 
 ---
  arch/arm64/boot/dts/rockchip/Makefile         |   1 +
  .../boot/dts/rockchip/rk3399-roc-pc-plus.dts  | 282 ++++++++++++++++++
- .../boot/dts/rockchip/rk3399-roc-pc.dtsi      |  22 +-
+ .../boot/dts/rockchip/rk3399-roc-pc.dtsi      |  19 +-
  arch/arm64/boot/dts/rockchip/rk3399.dtsi      |   8 +-
  sound/soc/codecs/es8328.c                     | 114 +++++++
- 5 files changed, 420 insertions(+), 7 deletions(-)
+ 5 files changed, 417 insertions(+), 7 deletions(-)
  create mode 100644 arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts
 
 diff --git a/arch/arm64/boot/dts/rockchip/Makefile b/arch/arm64/boot/dts/rockchip/Makefile
@@ -313,7 +313,7 @@ index 000000000000..c9158520ee23
 +};
 +*/
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-index 20309076dbac..7eb0165f3717 100644
+index 20309076dbac..747522c58640 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
 @@ -79,7 +79,7 @@
@@ -348,24 +348,7 @@ index 20309076dbac..7eb0165f3717 100644
  };
 
  &cpu_l0 {
-@@ -385,6 +388,7 @@
- 			vcc_sdio: LDO_REG4 {
- 				regulator-name = "vcc_sdio";
- 				regulator-boot-on;
-+				regulator-always-on;
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3000000>;
- 				regulator-state-mem {
-@@ -488,6 +492,8 @@
- 		regulator-min-microvolt = <712500>;
- 		regulator-max-microvolt = <1500000>;
- 		regulator-ramp-delay = <1000>;
-+		regulator-always-on;
-+		regulator-boot-on;
- 		vin-supply = <&vcc3v3_sys>;
-
- 		regulator-state-mem {
-@@ -612,7 +618,7 @@
+@@ -612,7 +615,7 @@
  		};
 
  		yellow_led_pin: yellow-led-pin {
@@ -374,7 +357,7 @@ index 20309076dbac..7eb0165f3717 100644
  		};
  	};
 
-@@ -673,6 +679,12 @@
+@@ -673,6 +676,12 @@
  			rockchip,pins = <1 RK_PA1 RK_FUNC_GPIO &pcfg_pull_up>;
  		};
  	};
