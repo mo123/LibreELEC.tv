@@ -1,15 +1,13 @@
-From 151e558b2b554f8ccf36eb583f37a50ff741b87d Mon Sep 17 00:00:00 2001
+From ef15dae1308eeff02cc5a09dfff0c0f4312b6819 Mon Sep 17 00:00:00 2001
 From: dengkx <1498971779@qq.com>
-Date: Fri, 18 Jun 2021 09:45:55 +0800
+Date: Mon, 21 Jun 2021 15:22:09 +0800
 Subject: [PATCH] RK3399: add roc-pc-plus
 
 ---
  arch/arm64/boot/dts/rockchip/Makefile         |   1 +
- .../boot/dts/rockchip/rk3399-roc-pc-plus.dts  | 282 ++++++++++++++++++
- .../boot/dts/rockchip/rk3399-roc-pc.dtsi      |  19 +-
- arch/arm64/boot/dts/rockchip/rk3399.dtsi      |   8 +-
- sound/soc/codecs/es8328.c                     | 114 +++++++
- 5 files changed, 417 insertions(+), 7 deletions(-)
+ .../boot/dts/rockchip/rk3399-roc-pc-plus.dts  | 319 ++++++++++++++++++
+ sound/soc/codecs/es8328.c                     | 111 ++++++
+ 3 files changed, 431 insertions(+)
  create mode 100644 arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts
 
 diff --git a/arch/arm64/boot/dts/rockchip/Makefile b/arch/arm64/boot/dts/rockchip/Makefile
@@ -26,10 +24,10 @@ index 26661c7b736b..102539d3a112 100644
  dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3399-rock-pi-4c.dtb
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts
 new file mode 100644
-index 000000000000..c9158520ee23
+index 000000000000..174e0656e260
 --- /dev/null
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc-plus.dts
-@@ -0,0 +1,282 @@
+@@ -0,0 +1,319 @@
 +/dts-v1/;
 +#include "rk3399-roc-pc.dtsi"
 +
@@ -111,7 +109,6 @@ index 000000000000..c9158520ee23
 +		status = "disabled";
 +	};
 +
-+
 +	es8388-sound {
 +		status = "okay";
 +		compatible = "simple-audio-card";
@@ -137,6 +134,12 @@ index 000000000000..c9158520ee23
 +			gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;	//GPIO1_A1
 +			default-state = "on";
 +		};
++	};
++	ir-receivet {
++		compatible = "gpio-ir-receiver";
++		gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_LOW>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&ir_int>;
 +	};
 +};
 +
@@ -219,6 +222,15 @@ index 000000000000..c9158520ee23
 +	/delete-property/ pmic,hold-gpio;
 +};
 +
++&yellow_led{
++	gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
++};
++&vcc_sys {
++	/delete-property/ gpio;
++	/delete-property/ pinctrl-names;
++	/delete-property/ pinctrl-0;
++};
++
 +&i2c1 {
 +	status = "okay";
 +	es8388: es8388@11 {
@@ -238,13 +250,7 @@ index 000000000000..c9158520ee23
 +
 +
 +&pinctrl {
-+  /*  i2s0 {
-+        i2s_8ch_mclk: i2s-8ch-mclk {
-+            rockchip,pins = <4 0 1 &pcfg_pull_none>;
-+        };
-+    };*/
-+
-+	ngff {
++    ngff {
 +		vcc3v3_ngff_en: vcc3v3-ngff-en {
 +			rockchip,pins = <4 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
 +		};
@@ -273,12 +279,41 @@ index 000000000000..c9158520ee23
 +	};
 +
 +
-+	 es8388-pins {
++	es8388-pins {
 +		ear_ctl_h: ear-ctl-h {
-+                        rockchip,pins = <0 2 RK_FUNC_GPIO &pcfg_pull_down>;
-+                };
++			rockchip,pins = <0 2 RK_FUNC_GPIO &pcfg_pull_down>;
++		};
 +	};
 +
++	i2s0 {
++		i2s0_8ch_bus: i2s0-8ch-bus {
++			rockchip,pins =
++				<3 RK_PD0 1 &pcfg_pull_none>,
++				<3 RK_PD1 1 &pcfg_pull_none>,
++				<3 RK_PD2 1 &pcfg_pull_none>,
++				<3 RK_PD3 1 &pcfg_pull_none>,
++				<3 RK_PD4 1 &pcfg_pull_none>,
++				<3 RK_PD5 1 &pcfg_pull_none>,
++				<3 RK_PD6 1 &pcfg_pull_none>,
++				<3 RK_PD7 1 &pcfg_pull_none>;
++		};
++
++		i2s_8ch_mclk: i2s-8ch-mclk {
++			rockchip,pins = <4 0 1 &pcfg_pull_none>;
++		};
++	};
++
++	leds {
++		yellow_led_pin: yellow-led-pin {
++			rockchip,pins = <0 13 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
++	ir {
++		ir_int: ir-int {
++			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
 +};
 +
 +&sdio0 {
@@ -312,86 +347,8 @@ index 000000000000..c9158520ee23
 +	status = "disabled";
 +};
 +*/
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-index 20309076dbac..747522c58640 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-roc-pc.dtsi
-@@ -79,7 +79,7 @@
-
- 		yellow_led: led-2 {
- 			label = "yellow:yellow-led";
--			gpios = <&gpio0 RK_PA2 GPIO_ACTIVE_HIGH>;
-+			gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
- 			default-state = "off";
- 			linux,default-trigger = "mmc1";
- 		};
-@@ -187,9 +187,6 @@
- 	vcc_sys: vcc-sys {
- 		compatible = "regulator-fixed";
- 		enable-active-high;
--		gpio = <&gpio2 RK_PA6 GPIO_ACTIVE_HIGH>;
--		pinctrl-names = "default";
--		pinctrl-0 = <&vcc_sys_en>;
- 		regulator-name = "vcc_sys";
- 		regulator-boot-on;
- 		regulator-min-microvolt = <5000000>;
-@@ -207,6 +204,12 @@
- 		regulator-max-microvolt = <1400000>;
- 		pwm-supply = <&vcc3v3_sys>;
- 	};
-+    ir-receivet {
-+        compatible = "gpio-ir-receiver";
-+        gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_LOW>;
-+        pinctrl-names = "default";
-+        pinctrl-0 = <&ir_int>;
-+    };
- };
-
- &cpu_l0 {
-@@ -612,7 +615,7 @@
- 		};
-
- 		yellow_led_pin: yellow-led-pin {
--			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
-+			rockchip,pins = <0 13 RK_FUNC_GPIO &pcfg_pull_none>;
- 		};
- 	};
-
-@@ -673,6 +676,12 @@
- 			rockchip,pins = <1 RK_PA1 RK_FUNC_GPIO &pcfg_pull_up>;
- 		};
- 	};
-+    ir {
-+        ir_int: ir-int {
-+            rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
-+        };
-+    };
-+
- };
-
- &pwm0 {
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index 7e69603fb41c..fa0ed95af70d 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-@@ -2241,9 +2241,13 @@
- 					<3 RK_PD4 1 &pcfg_pull_none>,
- 					<3 RK_PD5 1 &pcfg_pull_none>,
- 					<3 RK_PD6 1 &pcfg_pull_none>,
--					<3 RK_PD7 1 &pcfg_pull_none>,
--					<4 RK_PA0 1 &pcfg_pull_none>;
-+					<3 RK_PD7 1 &pcfg_pull_none>;
-+					//<4 RK_PA0 1 &pcfg_pull_none>;
- 			};
-+			i2s_8ch_mclk: i2s-8ch-mclk {
-+				rockchip,pins = <4 0 1 &pcfg_pull_none>;
-+			};
-+
- 		};
-
- 		i2s1 {
 diff --git a/sound/soc/codecs/es8328.c b/sound/soc/codecs/es8328.c
-index 7e26231a596a..9d89024ff0d6 100644
+index 7e26231a596a..2373b39cc572 100644
 --- a/sound/soc/codecs/es8328.c
 +++ b/sound/soc/codecs/es8328.c
 @@ -21,8 +21,13 @@
@@ -413,13 +370,13 @@ index 7e26231a596a..9d89024ff0d6 100644
  	bool master;
  	struct regulator_bulk_data supplies[ES8328_SUPPLY_NUM];
 +
-+    int hp_ctl_gpio;
-+    int hp_det_gpio;
++	int hp_ctl_gpio;
++	int hp_det_gpio;
 +
-+    bool muted;
-+    bool hp_inserted;
-+    bool hp_gpio_level;
-+    bool hp_det_level;
++	bool muted;
++	bool hp_inserted;
++	bool hp_gpio_level;
++	bool hp_det_level;
  };
 
 +static struct es8328_priv *es8328_private;
@@ -427,7 +384,7 @@ index 7e26231a596a..9d89024ff0d6 100644
  /*
   * ES8328 Controls
   */
-@@ -112,6 +127,42 @@ static const struct {
+@@ -112,6 +127,40 @@ static const struct {
  	{ 48000, ES8328_DACCONTROL6_DEEMPH_48k },
  };
 
@@ -435,9 +392,8 @@ index 7e26231a596a..9d89024ff0d6 100644
 +{
 +	struct es8328_priv *es8328 = es8328_private;
 +
-+	if (!es8328) {
-+		return 0;
-+	}
++	if (!es8328)
++	return 0;
 +
 +	if ((gpio & ES8328_CODEC_SET_HP) && es8328
 +	    && es8328->hp_ctl_gpio != INVALID_GPIO) {
@@ -451,84 +407,81 @@ index 7e26231a596a..9d89024ff0d6 100644
 +{
 +	struct es8328_priv *es8328 = es8328_private;
 +
-+    if(gpio_get_value(es8328->hp_det_gpio)) {
-+        es8328->hp_inserted = 1;
-+    } else {
-+        es8328->hp_inserted = 0;
-+    }
++	if (gpio_get_value(es8328->hp_det_gpio))
++		es8328->hp_inserted = 1;
++	else
++		es8328->hp_inserted = 0;
 +
-+	if(!es8328->muted && es8328->hp_inserted) {
++	if (!es8328->muted && es8328->hp_inserted)
 +		es8328_set_gpio(ES8328_CODEC_SET_HP, es8328->hp_gpio_level);
-+	} else {
-+        es8328_set_gpio(ES8328_CODEC_SET_HP, !es8328->hp_gpio_level);
-+    }
++	else
++		es8328_set_gpio(ES8328_CODEC_SET_HP, !es8328->hp_gpio_level);
++
 +	return IRQ_HANDLED;
 +}
-+
 +
 +
  static int es8328_set_deemph(struct snd_soc_component *component)
  {
  	struct es8328_priv *es8328 = snd_soc_component_get_drvdata(component);
-@@ -451,6 +502,14 @@ static const struct snd_soc_dapm_route es8328_dapm_routes[] = {
+@@ -451,6 +500,13 @@ static const struct snd_soc_dapm_route es8328_dapm_routes[] = {
 
  static int es8328_mute(struct snd_soc_dai *dai, int mute, int direction)
  {
-+    struct es8328_priv *es8328 = snd_soc_component_get_drvdata(dai->component);
-+    es8328->muted = mute;
-+    if (!mute && es8328->hp_inserted) {
-+        es8328_set_gpio(ES8328_CODEC_SET_HP, es8328->hp_gpio_level);
-+    } else {
-+        es8328_set_gpio(ES8328_CODEC_SET_HP, !es8328->hp_gpio_level);
-+    }
++	struct es8328_priv *es8328 = snd_soc_component_get_drvdata(dai->component);
++	es8328->muted = mute;
++	if (!mute && es8328->hp_inserted)
++		es8328_set_gpio(ES8328_CODEC_SET_HP, es8328->hp_gpio_level);
++	else
++		es8328_set_gpio(ES8328_CODEC_SET_HP, !es8328->hp_gpio_level);
 +
  	return snd_soc_component_update_bits(dai->component, ES8328_DACCONTROL3,
  			ES8328_DACCONTROL3_DACMUTE,
  			mute ? ES8328_DACCONTROL3_DACMUTE : 0);
-@@ -795,6 +854,21 @@ static int es8328_component_probe(struct snd_soc_component *component)
+@@ -795,6 +851,21 @@ static int es8328_component_probe(struct snd_soc_component *component)
  		goto clk_fail;
  	}
 
-+    if (es8328->hp_det_gpio != INVALID_GPIO) {
++	if (es8328->hp_det_gpio != INVALID_GPIO) {
 +		if (gpio_get_value(es8328->hp_det_gpio) == es8328->hp_det_level)
 +			es8328->hp_inserted = 1;
 +	} else {
-+        es8328->hp_inserted = 1;
-+    }
++		es8328->hp_inserted = 1;
++	}
 +
 +
-+    if (!strncmp(component->dev->of_node->name, "es8388", 6)) {
-+        usleep_range(18000, 20000);
-+        snd_soc_component_update_bits(component, ES8328_DACCONTROL17,
-+			    ES8328_DACCONTROL17_LD2LO, ES8328_DACCONTROL17_LD2LO);
-+        snd_soc_component_update_bits(component, ES8328_DACCONTROL20,
-+			    ES8328_DACCONTROL20_RD2RO, ES8328_DACCONTROL20_RD2RO);
-+    }
++	if (!strncmp(component->dev->of_node->name, "es8388", 6)) {
++		usleep_range(18000, 20000);
++		snd_soc_component_update_bits(component, ES8328_DACCONTROL17,
++			ES8328_DACCONTROL17_LD2LO, ES8328_DACCONTROL17_LD2LO);
++		snd_soc_component_update_bits(component, ES8328_DACCONTROL20,
++			ES8328_DACCONTROL20_RD2RO, ES8328_DACCONTROL20_RD2RO);
++	}
  	return 0;
 
  clk_fail:
-@@ -850,6 +924,8 @@ int es8328_probe(struct device *dev, struct regmap *regmap)
+@@ -850,6 +921,8 @@ int es8328_probe(struct device *dev, struct regmap *regmap)
  	struct es8328_priv *es8328;
  	int ret;
  	int i;
-+    int hp_irq = 0;
-+    enum of_gpio_flags flags;
++	int hp_irq = 0;
++	enum of_gpio_flags flags;
 
  	if (IS_ERR(regmap))
  		return PTR_ERR(regmap);
-@@ -859,6 +935,7 @@ int es8328_probe(struct device *dev, struct regmap *regmap)
+@@ -859,6 +932,7 @@ int es8328_probe(struct device *dev, struct regmap *regmap)
  		return -ENOMEM;
 
  	es8328->regmap = regmap;
-+    es8328_private = es8328;
++	es8328_private = es8328;
 
  	for (i = 0; i < ARRAY_SIZE(es8328->supplies); i++)
  		es8328->supplies[i].supply = supply_names[i];
-@@ -870,6 +947,43 @@ int es8328_probe(struct device *dev, struct regmap *regmap)
+@@ -870,6 +944,43 @@ int es8328_probe(struct device *dev, struct regmap *regmap)
  		return ret;
  	}
 
-+    es8328->hp_ctl_gpio = of_get_named_gpio_flags(dev->of_node, "hp-ctl-gpio", 0, &flags);
++	es8328->hp_ctl_gpio = of_get_named_gpio_flags(dev->of_node, "hp-ctl-gpio", 0, &flags);
 +	if (es8328->hp_ctl_gpio < 0) {
 +		dev_info(dev, "Can not read property hp_ctl_gpio\n");
 +		es8328->hp_ctl_gpio = INVALID_GPIO;
@@ -557,7 +510,7 @@ index 7e26231a596a..9d89024ff0d6 100644
 +
 +		if (hp_irq) {
 +			ret = devm_request_threaded_irq(dev, hp_irq, NULL, hp_det_irq_handler,
-+					IRQ_TYPE_EDGE_BOTH | IRQF_ONESHOT, "ES8323", NULL);
++					IRQ_TYPE_EDGE_BOTH | IRQF_ONESHOT, dev->of_node->name, NULL);
 +			if (ret < 0) {
 +				dev_err(dev, "request_irq failed: %d\n", ret);
 +				return ret;
