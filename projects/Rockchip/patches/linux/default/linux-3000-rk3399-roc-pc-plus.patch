@@ -135,9 +135,10 @@ index 000000000000..174e0656e260
 +			default-state = "on";
 +		};
 +	};
-+	ir-receivet {
++	ir-receiver {
 +		compatible = "gpio-ir-receiver";
 +		gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_LOW>;
++               linux,rc-map-name = "rc-khadas";
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&ir_int>;
 +	};
