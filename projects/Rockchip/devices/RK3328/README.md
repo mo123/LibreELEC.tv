@@ -6,6 +6,7 @@ This is a SoC device for RK3328
 
 * `PROJECT=Rockchip DEVICE=RK3328 ARCH=arm UBOOT_SYSTEM=a1 make image`
 * `PROJECT=Rockchip DEVICE=RK3328 ARCH=arm UBOOT_SYSTEM=roc-cc make image`
+* `PROJECT=Rockchip DEVICE=RK3328 ARCH=arm UBOOT_SYSTEM=roc-pc make image`
 * `PROJECT=Rockchip DEVICE=RK3328 ARCH=arm UBOOT_SYSTEM=rock64 make image`
 
 **How to use on an Android device**
