@@ -256,15 +256,15 @@ devices = \
       },
       'roc-cc': {
         'dtb': 'rk3328-roc-cc.dtb',
-        'config': 'evb-rk3328_defconfig'
+        'config': 'roc-cc-rk3328_defconfig'
       },
       'roc-pc': {
         'dtb': 'rk3328-roc-pc.dtb',
-        'config': 'evb-rk3328_defconfig'
+        'config': 'rock64-rk3328_defconfig'
       },
       'rock64': {
         'dtb': 'rk3328-rock64.dtb',
-        'config': 'evb-rk3328_defconfig'
+        'config': 'rock64-rk3328_defconfig'
       },
     },
     'RK3399': {
@@ -306,7 +306,7 @@ devices = \
       },
       'roc-pc': {
         'dtb': 'rk3399-roc-pc-mezzanine.dtb',
-        'config': 'firefly-rk3399_defconfig'
+        'config': 'roc-pc-mezzanine-rk3399_config'
       },
       'sapphire': {
         'dtb': 'rk3399-sapphire.dtb',
